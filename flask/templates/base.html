@@ -16,16 +16,28 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('categoria_listar') }}">Categorias</a>
-              <a class="nav-link" href="{{ url_for('listar_produtos') }}">Produtos</a>
+              <a class="nav-link" href="{{ url_for('categoria_listar') }}"
+                >Categorias</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('listar_produtos') }}"
+                >Produtos</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('listar_clientes') }}"
+                >Clientes</a
+              >
             </li>
           </ul>
         </div>
       </div>
     </nav>
-        <main class="container my-4">
-      {% include 'partials/_messages.html' %}
-      {% block content %}{% endblock %}
+    <main class="container my-4">
+      {% include 'partials/_messages.html' %} {% block content %}{% endblock %}
     </main>
   </body>
 </html>

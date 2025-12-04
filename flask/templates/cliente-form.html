@@ -1,7 +1,28 @@
-<form action="/cliente" method="post">
-  Nome do Cliente: <input type="text" name="nome" /><br />
-  Celular:         <input type="number" name="celular" /><br />
-  Email:           <input type="text" name="email" /><br />
-  CPF/CNPJ:        <input type="number" name="cpf_cnpj" /><br />
-  <button type="submit">Enviar</button>
-</form>
+{% extends 'base.html' %} {% block title %}{{ titulo }}{% endblock %} {% block
+content %}
+<div class="card p-4 shadow-sm">
+  <h1 class="h5 mb-3">{{ titulo }}</h1>
+  <form action="{{ url_for('salvar_cliente') }}" method="post">
+    <div class="mb-3">
+      <label class="form-label">Nome</label>
+      <input class="form-control" type="text" name="nome" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Celular</label>
+      <input class="form-control" type="text" name="celular" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input class="form-control" type="email" name="email" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">CPF/CNPJ</label>
+      <input class="form-control" type="text" name="cpf_cnpj" />
+    </div>
+    <button class="btn btn-success" type="submit">Salvar</button>
+    <a href="{{ url_for('listar_clientes') }}" class="btn btn-secondary"
+      >Voltar</a
+    >
+  </form>
+</div>
+{% endblock %}
