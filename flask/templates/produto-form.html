@@ -1,7 +1,31 @@
-<form action="/salvar-produto" method="post">
-  Nome do Produto: <input type="text" name="nome" /><br />
-  Preço:         <input type="number" name="valor_venda" /><br />
-  Quantidade:           <input type="number" name="estoque" /><br />
-  Categoria ID:        <input type="number" name="categoria_id" /><br />
-  <button type="submit">Enviar</button>
-</form>
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div class="card p-4 shadow-sm">
+  <h1 class="h5 mb-3">{{ titulo }}</h1>
+  <form action="{{ url_for('salvar_produto') }}" method="post">
+    <div class="mb-3">
+      <label class="form-label">Nome</label>
+      <input class="form-control" type="text" name="nome">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Preço</label>
+      <input class="form-control" type="text" name="valor_venda">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Quantidade (estoque)</label>
+      <input class="form-control" type="text" name="estoque">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Categoria</label>
+      <select class="form-select" name="categoria_id">
+        {% for categoria in categorias %}
+          <option value="{{ categoria[0] }}">{{ categoria[1] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button class="btn btn-success" type="submit">Salvar</button>
+    <a href="{{ url_for('listar_produtos') }}" class="btn btn-secondary">Voltar</a>
+  </form>
+</div>
+{% endblock %}

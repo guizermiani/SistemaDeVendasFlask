@@ -98,7 +98,7 @@ def salvar_produto():
         categoria_id = request.form.get('categoria_id')
         
         if not nome or not valor_venda or not estoque or not categoria_id:
-            return "<h3> Por favor, preencha todos os campos</h3"
+            return "<h3> Por favor, preencha todos os campos</h3>"
         
         conexao = conecta_db()
         cursor = conexao.cursor()
@@ -108,7 +108,14 @@ def salvar_produto():
         conexao.commit()
 
         return f"<h2> Produto Salvo com Sucesso:  {nome} </h2>"
-    return render_template("produto-form.html")
+
+    conexao = conecta_db()
+    cursor = conexao.cursor()
+    cursor.execute("SELECT id, nome FROM categoria")
+    categorias = cursor.fetchall()
+
+    return render_template("produto-form.html", categorias=categorias, titulo="Cadastrar Produto")
+
 
 @app.route('/deletar-produto', methods=['POST', 'GET'])
 def deletar_produto():

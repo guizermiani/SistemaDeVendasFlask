@@ -1,28 +1,33 @@
- <div class="Table">
-                <article>
-                    <h2 id="productsComparative">Tabela de Produtos</h2>
-                    <form action="#" method="post" aria-label="tabela de produtos">
-                        <table border="1">
-                            <caption>Tabela de Produtos</caption>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>Preco</th>
-                                    <th>Estoque</th>
-                                    <th>CategoriaID</th>
-                                </tr>
-                                <tr>
-                                    {% for produto in produtos %}
-                                    <tr>
-                                        <td>{{ produto[0] }}</td>
-                                        <td>{{ produto[1] }}</td>
-                                        <td>{{ produto[2] }}</td>
-                                        <td>{{ produto[3] }}</td>
-                                        <td>{{ produto[4] }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                               
+{% extends 'base.html' %}
+{% block title %}Lista de Produtos{% endblock %}
+
+{% block content %}
+  <div class="card p-4 shadow-sm">
+    <h1 class="h5 mb-3">Produtos</h1>
+
+    <a href="{{ url_for('salvar_produto') }}" class="btn btn-primary mb-3">Novo produto</a>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Preço</th>
+          <th>Estoque</th>
+          <th>Categoria ID</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for p in produtos %}
+        <tr>
+          <td>{{ p[0] }}</td>
+          <td>{{ p[1] }}</td>
+          <td>{{ p[2] }}</td>
+          <td>{{ p[3] }}</td>
+          <td>{{ p[4] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
