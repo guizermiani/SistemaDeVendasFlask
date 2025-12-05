@@ -38,8 +38,6 @@ def salvar_cliente():
 
     return render_template("cliente-form.html", titulo="Cadastrar Cliente")
 
-
-# Rota para listar clientes
 @app.route("/listar-clientes", methods=["GET"])
 def listar_clientes():
     conexao = conecta_db()
