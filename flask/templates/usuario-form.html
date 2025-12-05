@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+
+<div class="card p-4 shadow-sm">
+  <h1 class="h5 mb-3">{{ titulo }}</h1>
+    <form action="/usuario/novo" method="post">
+        <div class="mb-3">
+            <label for="form-label"> Login</label>
+            <input class="form-control" type="text" name="login">
+        </div>
+        <div class="mb-3">
+            <label for="form-label"> Senha</label>
+            <input class="form-control" type="password" name="senha">
+        </div>
+    
+        <button class="btn btn-success" type="submit"> Salvar</button>
+        <a href="{{ url_for('usuario_listar') }}" class="btn btn-secondary">Voltar</a>
+    </form>
+</div>
+{% endblock %}

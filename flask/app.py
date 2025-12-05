@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from conexao import conecta_db
 from categoria_bd import inserir_categoria
 from cliente_bd import inserir_cliente, listar_clientes_bd
+from usuario_bd import inserir_usuario_bd
 
 app = Flask(__name__)
 
@@ -48,6 +49,25 @@ def listar_clientes():
     clientes = cursor.fetchall()
     return render_template("cliente-list.html", clientes=clientes, titulo="Clientes")
 
+
+@app.route("/usuario/novo", methods=["GET", "POST"])
+def salvar_usuario():
+    if request.method == "POST":
+        login = request.form.get("login")
+        senha = request.form.get("senha")
+
+        if not login or not senha:
+            return "<h3> Por favor, preencha todos os campos</h3>"
+
+        conexao = conecta_db()
+        inserir_usuario_bd(conexao, login, senha, 'S')
+        return f"<h2> Usuário Salvo com Sucesso:  {login} </h2>"
+    
+    return render_template("usuario-form.html", titulo="Cadastrar Usuário")
+
+@app.route("/usuario/listar", methods=["GET", "POST"])
+def usuario_listar():
+    return True
 
 # Categoria
 @app.route("/salvar-categoria", methods=["GET", "POST"])
