@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Usuários{% endblock %}
+{% block content %}
+
+<div class="card p-4 shadow-sm">
+  <h1 class="h4 mb-3">Lista de Usuários</h1>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Login</th>
+        <th>Admin</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for usuario in usuarios %}
+      <tr>
+        <td>{{ usuario[0] }}</td>
+        <td>{{ usuario[1] }}</td>
+        <td>{% if usuario[2] %}Sim{% else %}Não{% endif %}</td>
+
+        <td>
+          <a href="#" class="btn btn-sm btn-secondary">Editar</a>
+          <form action="{{ url_for('usuarios_excluir', id=usuario[0]) }}"
+                method="post" class="d-inline">
+            <button class="btn btn-sm btn-danger"
+                    onclick="return confirm('Tem certeza que deseja excluir?')">
+              Excluir
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

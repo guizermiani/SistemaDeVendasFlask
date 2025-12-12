@@ -2,16 +2,30 @@ from flask import Flask, render_template, request, redirect, url_for
 from conexao import conecta_db
 from categoria_bd import inserir_categoria
 from cliente_bd import inserir_cliente, listar_clientes_bd
-from usuario_bd import inserir_usuario_bd
+from usuario_bd import inserir_usuario_bd, listar_usuarios_bd, deletar_usuario_db
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/home")
 def home():
-    nome = "Guilherme Zermiani"
-    return render_template("index.html", nome=nome)
+    return render_template("home.html")
 
+# Login
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        usuario = request.form.get('usuario')
+        senha = request.form.get('senha')
+
+        # Valida campos obrigatórios; ajuste aqui para autenticar de verdade
+        if not usuario or not senha:
+            erro = "Preencha usuário e senha para entrar."
+            return render_template("login.html", erro=erro)
+
+        return redirect(url_for('home'))
+
+    return render_template("login.html")
 
 # Cliente
 @app.route("/salvar-cliente", methods=["GET", "POST"])
@@ -65,9 +79,23 @@ def salvar_usuario():
     
     return render_template("usuario-form.html", titulo="Cadastrar Usuário")
 
-@app.route("/usuario/listar", methods=["GET", "POST"])
-def usuario_listar():
-    return True
+@app.route("/listar-usuarios", methods=["GET"])
+def listar_usuarios():
+    conexao = conecta_db()
+    cursor = conexao.cursor()
+    cursor.execute("SELECT id, login, admin FROM usuario")
+    usuarios = cursor.fetchall()
+    return render_template("usuario-list.html", usuarios=usuarios)
+
+
+@app.route("/usuario/<int:id>/deletar", methods=["POST"])
+def usuarios_excluir(id):
+    conexao = conecta_db()
+    deletar_usuario_db(conexao, id)
+    return redirect(url_for('listar_usuarios'))
+
+
+
 
 # Categoria
 @app.route("/salvar-categoria", methods=["GET", "POST"])
@@ -81,7 +109,7 @@ def salvar_categoria():
         inserir_categoria(conexao, nome)
 
         return f"<h2> Categoria Salva com Sucesso:  {nome} </h2>"
-    return render_template("categoria-form.html")
+    return render_template("categoria-form.html", titulo="Cadastrar Categoria")
 
 
 @app.route("/deletar-categoria", methods=["POST", "GET"])
@@ -110,7 +138,7 @@ def categoria_listar():
         resultado += f"<li>ID: {registro[0]}, Nome: {registro[1]}</li>"
     resultado += "</ul>"
 
-    return render_template("categoria-list.html", categorias=registros)
+    return render_template("categoria-list.html", categorias=registros, titulo="Categorias")
 
 
 # Produto

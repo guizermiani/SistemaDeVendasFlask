@@ -15,7 +15,7 @@ def login_bd(conexao, login,senha) -> bool:
 
 def listar_usuarios_bd(conexao):
     cursor = conexao.cursor()
-    sql_listar = """ select id, login, admin  from  usuario 
+    sql_listar = """ select id, login, from  usuario 
                      order by id asc    
                  """
 
@@ -80,10 +80,7 @@ def atualizar_usuario(conexao):
     cursor.execute(sql_update,dados)
     conexao.commit()
 
-def deletar_usuario(conexao):
-    print("Deletando Usuario")
+def deletar_usuario_db(conexao, id):
     cursor = conexao.cursor()
-    id   = input("Digite o ID : ")
-    sql_delete = "delete from usuario where id = "+ id
-    cursor.execute(sql_delete)
+    cursor.execute("DELETE FROM usuario WHERE id = %s", (id,))
     conexao.commit()
