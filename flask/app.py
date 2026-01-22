@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from conexao import conecta_db
 from categoria_bd import inserir_categoria
 from cliente_bd import inserir_cliente, listar_clientes_bd
-from usuario_bd import inserir_usuario_bd, listar_usuarios_bd, deletar_usuario_db
+from usuario_bd import inserir_usuario_bd, listar_usuarios_bd, deletar_usuario_db, login_bd
 
 app = Flask(__name__)
 
@@ -22,9 +22,18 @@ def login():
         if not usuario or not senha:
             erro = "Preencha usuário e senha para entrar."
             return render_template("login.html", erro=erro)
+        
+        conexao = conecta_db()
+        valida_login = login_bd(conexao, usuario, senha)
+        
+        # Antes de redirecionar validar o login no banco de dados
 
-        return redirect(url_for('home'))
-
+        if valida_login == "OK":
+            return redirect(url_for('home'))
+        else:
+            return render_template("login.html", erro=valida_login)
+        
+    # Obriga a passar no login para acessar o sistema
     return render_template("login.html")
 
 # Cliente

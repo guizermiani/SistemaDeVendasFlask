@@ -1,16 +1,29 @@
 from conexao import conecta_db
 import bcrypt
+from flask_jwt_extended import create_access_token
 
-def login_bd(conexao, login,senha) -> bool:
+def login_bd(conexao, login, senha) -> str:
     cursor = conexao.cursor()
-    cursor.execute(" select id,login,senha from usuario"+
-                   " where login = '" + login+ "'", '"' + senha+ "'")
+    cursor.execute("SELECT id, login, senha FROM usuario WHERE login = %s", (login,))
     registro = cursor.fetchone()
 
-    if  registro:
-        return True
+    if registro: # Verificando se o usuario foi encontrado
+        senha_verificar = senha.encode("utf-8")
+
+        senha_bd = registro[2]
+
+        if isinstance(senha_bd, str):
+            senha_bd_bytes = senha_bd.encode("utf-8")
+        else:
+            senha_bd_bytes = senha_bd
+            
+        if bcrypt.checkpw(senha_verificar, senha_bd_bytes):
+             return "OK"
+        else:
+             return "Senha inválida."
+         
     else:
-        return False
+        return "Usuário não encontrado."
 
 
 def listar_usuarios_bd(conexao):
