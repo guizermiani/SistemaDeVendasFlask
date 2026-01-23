@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from conexao import conecta_db
 from categoria_bd import inserir_categoria
 from cliente_bd import inserir_cliente, listar_clientes_bd
-from usuario_bd import inserir_usuario_bd, listar_usuarios_bd, deletar_usuario_db, login_bd
+from usuario_bd import inserir_usuario_bd, listar_usuarios_bd, deletar_usuario_db, login_bd, requisitos_senha
 
 app = Flask(__name__)
 
@@ -78,7 +78,15 @@ def salvar_usuario():
     if request.method == "POST":
         login = request.form.get("login")
         senha = request.form.get("senha")
+        confirmar_senha = request.form.get("confirma_senha")
+        
+        if senha != confirmar_senha:
+            return('As senhas não coincidem!')
 
+        senha_requisitos = requisitos_senha(senha)
+        if senha_requisitos != True:
+            return f"<h3> {senha_requisitos} </h3>"
+        
         if not login or not senha:
             return "<h3> Por favor, preencha todos os campos</h3>"
 
@@ -102,6 +110,7 @@ def usuarios_excluir(id):
     conexao = conecta_db()
     deletar_usuario_db(conexao, id)
     return redirect(url_for('listar_usuarios'))
+
 
 
 

@@ -72,7 +72,7 @@ def inserir_usuario_bd(conexao, login,senha,admin):
     print("Hash Senha ", hash_senha)
 
     sql_insert = "insert into usuario (login,senha,admin) values ( %s, %s,%s )"
-    dados = (login,hash_senha,admin)
+    dados = (login,hash_senha.decode('utf-8'),admin)
     cursor.execute(sql_insert, dados)
     conexao.commit()
 
@@ -97,3 +97,26 @@ def deletar_usuario_db(conexao, id):
     cursor = conexao.cursor()
     cursor.execute("DELETE FROM usuario WHERE id = %s", (id,))
     conexao.commit()
+
+def requisitos_senha(senha):
+    tamanho = len(senha)
+    maiuscula = any(c.isupper() for c in senha)
+    minuscula = any(c.islower() for c in senha)
+    numero = any(c.isdigit() for c in senha)
+
+    if numero == False:
+        return 'A senha deve conter pelo menos um numero.'
+    
+    if maiuscula == False:
+        return 'A senha deve conter pelo menos uma letra maiuscula.'\
+            
+    if minuscula == False:
+        return 'A senha deve conter pelo menos uma letra minuscula.'
+
+    if tamanho < 6:
+        return 'A senha deve ter pelo menos 6 caracteres.'
+    else:
+        return True
+    
+if __name__ == "__main__":
+    print(requisitos_senha("Testeee1"))

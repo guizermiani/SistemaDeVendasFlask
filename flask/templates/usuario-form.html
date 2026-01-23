@@ -13,7 +13,11 @@
             <label for="form-label"> Senha</label>
             <input class="form-control" type="password" name="senha">
         </div>
-    
+        <div class="mb-3">
+            <label for="form-label"> Confirma Senha</label>
+            <input class="form-control" type="password" name="confirma_senha">
+            <br>
+
         <button class="btn btn-success" type="submit"> Salvar</button>
         <a href="{{ url_for('listar_usuarios') }}" class="btn btn-secondary">Voltar</a>
     </form>
